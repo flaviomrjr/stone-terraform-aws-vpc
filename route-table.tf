@@ -25,9 +25,10 @@ resource "aws_route_table" "route_private_app" {
 }
 
 resource "aws_route" "route_private_app_01" {
+  count = var.create_vpc_db == true ? 1 : 0
   route_table_id            = aws_route_table.route_private_app.id
   destination_cidr_block    = var.cidr_vpc_db
-  vpc_peering_connection_id = aws_vpc_peering_connection.px_app_db[0].id
+  vpc_peering_connection_id = aws_vpc_peering_connection.px_app_db[count.index].id
 }
 
 resource "aws_route" "route_private_app_02" {
